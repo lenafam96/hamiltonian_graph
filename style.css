@@ -1,0 +1,34 @@
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    width: 50px;
+}
+
+div#container, table{
+    margin: 50px auto;
+}
+
+input[type="number"] {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+button.btn {
+    width: 30%;
+    margin: 15px auto;
+}
+
+textarea {
+    padding: 10px;
+}
+
+div.result>*{
+    padding: 10vh;
+    font-size: xx-large;
+}
