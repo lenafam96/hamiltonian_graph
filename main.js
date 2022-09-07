@@ -191,5 +191,4 @@ function main(){
             conclusion.innerHTML = "Ma trận kề không hợp lệ!";
             path.innerHTML = "";
     }    
-    console.log(array,node,mark,resutl);
 }
