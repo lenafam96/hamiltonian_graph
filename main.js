@@ -1,7 +1,6 @@
 let swap_mode = true;
 let defaultCol = 3;
-let array = [];
-let u;
+let array,node,mark,countCircuit,resutl,u;
 
 function swap_mode_button(){
     remove_input();
@@ -97,16 +96,51 @@ function checkValidMatrix(){
     return false;
 }
 
-function checkExist(){
-    
+function create_circuit(B){
+    resutl.push(B.join("->"));
+    countCircuit++;
 }
 
+function hamilton_circuit(B, C, i){
+    for (let j = 0; j < array.length; j++) {
+        if(array[B[i-1]][j] > 0 && C[j]==0 && j!=B[i-1]){
+            B[i] = j;
+            C[j] = 1;
+            if(i<array.length)
+                hamilton_circuit(B,C,i+1);
+            else
+                if(B[i]==B[0])
+                    create_circuit(B);
+            C[j] = 0;
+        }
+    }
+}
 
+function create_path(B){
+    resutl.push(B.join("->"));
+}
+
+function hamilton_path(B,C,i){
+    if(i===array.length)
+        create_path(B);
+    else{
+        for (let j = 0; j < array.length; j++) {
+            if(array[B[i-1]][j]>0 && C[j] == 0 && j!=B[0] && j!=B[i-1]){
+                B[i]=j;
+                C[j]=1;
+                hamilton_path(B,C,i+1);
+                C[j]=0;
+            }
+        }
+    }
+}
 
 function main(){
-    array = []
+    array = [];
+    resutl = [];
+    countCircuit = 0;
     let conclusion = document.getElementById("conclusion");
-    let result = document.getElementById("result");
+    let path = document.getElementById("result");
     if(swap_mode){
             for(let i = 0; i<defaultCol;i++){
             let row = []
@@ -120,19 +154,41 @@ function main(){
     else{
         let matrix = document.getElementById('input-matrix').value;
         array = matrix.split('\n').map(function(row){
-            return row.split(" ").map(Number);
+            return row.trim().split(" ").map(Number);
         });
     }
+    // init array node, mark
+    node = Array(array.length)
+    mark = Array(array.length).fill(0)
 
     // find path
     if(checkValidMatrix()){
-        let d = checkExist();
-        
+        for (let i = 0; i < array.length; i++) {
+            node[0] = i;
+            hamilton_circuit(node,mark,1);
+        }
+        if(countCircuit>0){
+            conclusion.innerHTML = "Đồ thị là đồ thị Hamilton có chu trình Hamilton:";
+            path.innerHTML = resutl[0];
+        }
+        else {
+            node = Array(array.length).fill(0)
+            for (let i = 0; i < array.length; i++) {
+                node[0] = i;
+                hamilton_path(node,mark,1);
+            }
+            if(resutl.length>0){
+                conclusion.innerHTML = "Đồ thị là đồ thị nửa Hamilton có đường đi Hamilton:";
+                path.innerHTML = resutl[0];
+            }
+            else{
+                conclusion.innerHTML = "Đồ thị không tồn tại chu trình và đường đi Hamilton!";
+                path.innerHTML = "";
+            }
+        }
     }
     else {
             conclusion.innerHTML = "Ma trận kề không hợp lệ!";
-            result.innerHTML = "";
-    }
-
-    
+            path.innerHTML = "";
+    }    
 }
