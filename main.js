@@ -11,6 +11,16 @@ function swap_mode_button(){
     swap_mode = swap_mode?false:true;
 }
 
+function clear_input(){
+    remove_input();
+    if(swap_mode){
+        create_matrix_input();
+    }
+    else{
+        create_textarea();
+    }
+}
+
 function disable_button(){
     let add = document.getElementById("increment-size-button");
     let sub = document.getElementById("decrement-size-button");
